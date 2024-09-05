@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model masyarakat {
+  nik       String      @id @db.VarChar(255)
+  nama      String      @db.VarChar(250)
+  username  String      @db.VarChar(255)
+  password  String      @db.VarChar(255)
+  telp      String      @db.VarChar(255)
+  pengaduan pengaduan[]
+}
+
+model pengaduan {
+  id_pengaduan  Int              @id @default(autoincrement())
+  tgl_pengaduan DateTime         @db.Date
+  nik           String           @db.VarChar(255)
+  isi_laporan   String           @db.Text
+  foto          String           @db.VarChar(255)
+  status        pengaduan_status
+  masyarakat    masyarakat       @relation(fields: [nik], references: [nik], onDelete: Cascade, map: "pengaduan_ibfk_1")
+  tanggapan     tanggapan[]
+
+  @@index([nik], map: "nik")
+}
+
+model petugas {
+  id_petugas   Int           @id @default(autoincrement())
+  nama_petugas String        @db.VarChar(250)
+  username     String        @db.VarChar(255)
+  password     String        @db.VarChar(255)
+  telp         String        @db.VarChar(255)
+  level        petugas_level
+  tanggapan    tanggapan[]
+}
+
+model tanggapan {
+  id_tanggapan  Int       @id @default(autoincrement())
+  id_pengaduan  Int
+  tgl_tanggapan DateTime  @db.Date
+  tanggapan     String    @db.Text
+  id_petugas    Int
+  petugas       petugas   @relation(fields: [id_petugas], references: [id_petugas], onDelete: Cascade, map: "tanggapan_ibfk_1")
+  pengaduan     pengaduan @relation(fields: [id_pengaduan], references: [id_pengaduan], onDelete: Cascade, map: "tanggapan_ibfk_2")
+
+  @@index([id_pengaduan], map: "id_pengaduan")
+  @@index([id_petugas], map: "id_petugas")
+}
+
+enum pengaduan_status {
+  pending @map("0")
+  proses
+  selesai
+}
+
+enum petugas_level {
+  admin
+  petugas
+}
