@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import Navigation from "@/components/navigation/navigation";
+
 interface Pengaduan {
     id_tanggapan: number;
     tanggal_tanggapan: string;
