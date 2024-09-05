@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import DialogEdit from "./dialog/dialog-edit";
 import Navigation from "@/components/navigation/navigation";
+import { Button } from "@/components/ui/button";
 interface Pengaduan {
     id_pengaduan: number;
     tgl_pengaduan: string; // Gunakan string untuk format tanggal
@@ -18,16 +19,16 @@ const Dashboard = () => {
     const [data, setData] = useState<Pengaduan[]>([]);
 
     // Fungsi untuk mengambil data dari API
+    const fetchData = async () => {
+        try {
+            const response = await fetch("/api/pengaduan");
+            const result = await response.json();
+            setData(result.data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("/api/pengaduan");
-                const result = await response.json();
-                setData(result.data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
 
         fetchData();
     }, []);
@@ -35,6 +36,21 @@ const Dashboard = () => {
     const formatTanggal = (tanggal: string) => {
         return format(new Date(tanggal), "dd-MM-yyyy");
     };
+
+    const selesai = async (id_pengaduan: number) => {
+        try {
+            const response = await fetch("/api/pengaduan", {
+                method: "PUT", 
+                body: JSON.stringify({
+                    id_pengaduan: id_pengaduan
+                })
+            });
+            const result = await response.json();
+            fetchData();
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
     return (
         <>
         <Navigation/>
@@ -65,6 +81,12 @@ const Dashboard = () => {
                                         item.status === "pending" &&
                                         <>
                                             <DialogEdit id_pengaduan={item.id_pengaduan}/>
+                                        </>
+                                    }
+                                    {
+                                        item.status === "proses" &&
+                                        <>
+                                            <Button onClick={() => selesai(item.id_pengaduan)}>Selesai</Button>
                                         </>
                                     }
                                 </TableCell>

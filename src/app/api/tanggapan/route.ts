@@ -31,6 +31,41 @@ export const POST = async (req: NextRequest) => {
         })
     }catch(error){
         if(error instanceof Error){
+            console.log(error.message)
+            return NextResponse.json({
+                message: error.message,
+                
+            }, {
+                status: 500,
+            })
+        }else{
+            return NextResponse.json({
+                message: "An error occurred",
+            }, {
+                status: 500,
+            })
+        }
+    }
+}
+
+export const PUT = async(req: NextRequest) => {
+    try{
+        const { id_pengaduan } = await req.json();
+
+        await prisma.pengaduan.update({
+            where: {
+                id_pengaduan
+            },
+            data: {
+                status: pengaduan_status.selesai
+            }
+        })
+
+        return NextResponse.json({
+            message: "Tanggapan berhasil diubah",
+        })
+    }catch(error){
+        if(error instanceof Error){
             return NextResponse.json({
                 message: error.message,
                 
@@ -49,14 +84,11 @@ export const POST = async (req: NextRequest) => {
 
 export const GET = async () => {
     try{
+        const data = await prisma.$queryRaw`
+        SELECT * FROM tanggapan JOIN petugas ON tanggapan.id_petugas=petugas.id_petugas;`
         return NextResponse.json({
-            data: await prisma.tanggapan.findMany({
-                include: {
-                    petugas: true,
-                    pengaduan: true,
-                },
-            })
-        })
+            data: data
+        });
     }catch(error){
         if(error instanceof Error){
             return NextResponse.json({

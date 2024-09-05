@@ -7,13 +7,31 @@ import Navigation from "@/components/navigation/navigation";
 
 interface Pengaduan {
     id_tanggapan: number;
-    tanggal_tanggapan: string;
+    tgl_tanggapan: string;
     nama_petugas: string;
     tanggapan: string;
 }
 
 const Tanggapan = () => {
     const [data, setData] = useState<Pengaduan[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("/api/tanggapan");
+                const result = await response.json();
+                setData(result.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const formatTanggal = (tanggal: string) => {
+        return format(new Date(tanggal), "dd-MM-yyyy");
+    };
 
     return(
         <>
@@ -34,7 +52,7 @@ const Tanggapan = () => {
                         {data.map((item, index) => (
                             <TableRow key={item.id_tanggapan}>
                                 <TableCell>{index + 1}</TableCell>
-                                <TableCell>{item.tanggal_tanggapan}</TableCell>
+                                <TableCell>{formatTanggal(item.tgl_tanggapan)}</TableCell>
                                 <TableCell>{item.nama_petugas}</TableCell>
                                 <TableCell>{item.tanggapan}</TableCell>
                             </TableRow>

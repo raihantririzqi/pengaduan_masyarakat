@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 
 export const GET = async () => {
     try {
+        
         const pengaduan = await prisma.pengaduan.findMany();
         return NextResponse.json({
             data: pengaduan
@@ -90,3 +91,37 @@ export const POST = async (req: NextRequest) => {
         }
     }
 };
+
+export const PUT = async(req: NextRequest) => {
+    try{
+        const { id_pengaduan } = await req.json();
+
+        await prisma.pengaduan.update({
+            where: {
+                id_pengaduan
+            },
+            data: {
+                status: pengaduan_status.selesai
+            }
+        })
+
+        return NextResponse.json({
+            message: "Tanggapan berhasil diubah",
+        })
+    }catch(error){
+        if(error instanceof Error){
+            return NextResponse.json({
+                message: error.message,
+                
+            }, {
+                status: 500,
+            })
+        }else{
+            return NextResponse.json({
+                message: "An error occurred",
+            }, {
+                status: 500,
+            })
+        }
+    }
+}
