@@ -85,7 +85,7 @@ export const PUT = async(req: NextRequest) => {
 export const GET = async () => {
     try{
         const data = await prisma.$queryRaw`
-        SELECT * FROM tanggapan JOIN petugas ON tanggapan.id_petugas=petugas.id_petugas;`
+        SELECT * FROM tanggapan JOIN petugas ON tanggapan.id_petugas=petugas.id_petugas JOIN pengaduan ON tanggapan.id_pengaduan=pengaduan.id_pengaduan JOIN masyarakat ON pengaduan.nik=masyarakat.nik`
         return NextResponse.json({
             data: data
         });
