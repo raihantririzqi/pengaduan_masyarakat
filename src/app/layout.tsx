@@ -29,17 +29,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Toaster position="bottom-right" />
-        {route !== "/" ? <>
-          {children}
-        </>
-        :
-        <>
           <div className="flex min-h-screen w-full flex-col">
-            <Navigation route={route}/>
             {children}
           </div>
-        </>
-        }
       </body>
     </html>
   );

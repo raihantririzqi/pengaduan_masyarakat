@@ -22,5 +22,6 @@ export const POST = async (req: NextRequest) => {
 
     return NextResponse.json({
         message: "Logged in successfully",
+        id_petugas: petugas.id_petugas
     });
 };

@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import DialogEdit from "./dialog/dialog-edit";
+import Navigation from "@/components/navigation/navigation";
 interface Pengaduan {
     id_pengaduan: number;
     tgl_pengaduan: string; // Gunakan string untuk format tanggal
@@ -32,9 +33,11 @@ const Dashboard = () => {
     }, []);
 
     const formatTanggal = (tanggal: string) => {
-        return format(new Date(tanggal), "dd-MM-yyyy"); // Ubah format sesuai kebutuhan
+        return format(new Date(tanggal), "dd-MM-yyyy");
     };
     return (
+        <>
+        <Navigation/>
         <div className="flex flex-col p-20 gap-4">
             <div className="font-bold text-lg">Pengaduan</div>
             <Card>
@@ -58,7 +61,12 @@ const Dashboard = () => {
                                 <TableCell>{item.isi_laporan}</TableCell>
                                 <TableCell>{item.status}</TableCell>
                                 <TableCell>
-                                    <DialogEdit />
+                                    {
+                                        item.status === "pending" &&
+                                        <>
+                                            <DialogEdit id_pengaduan={item.id_pengaduan}/>
+                                        </>
+                                    }
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -66,6 +74,7 @@ const Dashboard = () => {
                 </Table>
             </Card>
         </div>
+        </>
     );
 };
 

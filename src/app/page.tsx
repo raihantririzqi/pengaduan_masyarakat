@@ -24,7 +24,7 @@ const Login = () => {
         password: password
       });
       router.push('/dashboard');
-      router.refresh();
+      document.cookie = `token=${response.data.id_petugas}`;
     } catch (err) {
       console.error('Login error:', err);
       toast.error("Login Gagal");

@@ -6,20 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface Props {
-    route: string;
-}
-
-const Navigation = ({route}: Props) => {
-    const [currentRoute, setCurrentRoute] = useState(route);
-    const [previousRoute, setPreviousRoute] = useState('');
-    const router = useRouter();
-
-    const changeRouter = (route: string) => {
-        setPreviousRoute(currentRoute);
-        setCurrentRoute(route);
-        router.push(route);
-    };
+const Navigation = () => {
     return (
         <>
             <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -34,7 +21,7 @@ const Navigation = ({route}: Props) => {
                         href="/dashboard"
                         className="text-muted-foreground transition-colors hover:text-foreground"
                     >
-                        {route}
+                        Dashboard
                     </Link>
                     <Link
                         href="/tanggapan"
