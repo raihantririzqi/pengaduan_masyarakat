@@ -8,6 +8,8 @@ import Navigation from "@/components/navigation/navigation";
 interface Pengaduan {
     id_tanggapan: number;
     tgl_tanggapan: string;
+    nik: string;
+    isi_laporan: string;
     nama_petugas: string;
     tanggapan: string;
 }
@@ -44,6 +46,8 @@ const Tanggapan = () => {
                         <TableRow>
                             <TableCell>No.</TableCell>
                             <TableCell>Tanggal Tanggapan</TableCell>
+                            <TableCell>NIK</TableCell>
+                            <TableCell>Isi Laporan</TableCell>
                             <TableCell>Nama Petugas</TableCell>
                             <TableCell>Tanggapan</TableCell>
                         </TableRow>
@@ -53,6 +57,8 @@ const Tanggapan = () => {
                             <TableRow key={item.id_tanggapan}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{formatTanggal(item.tgl_tanggapan)}</TableCell>
+                                <TableCell>{item.nik}</TableCell>
+                                <TableCell>{item.isi_laporan}</TableCell>
                                 <TableCell>{item.nama_petugas}</TableCell>
                                 <TableCell>{item.tanggapan}</TableCell>
                             </TableRow>
